@@ -41,7 +41,7 @@ namespace Metro2.Scena
             SetupShader(Shader, camera);
             foreach (var sceneElement in SceneElements)
             {
-                sceneElement.Draw(Shader);
+                sceneElement.Draw(Shader, graphics);
             }
         }
         private void SetupShader(Effect shader, Camera camera)
@@ -97,26 +97,26 @@ namespace Metro2.Scena
             }
             return directions.ToArray();
         }
-        private int[] GetLightsTypes()
+        private float[] GetLightsTypes()
         {
-            var types = new List<int>();
+            var types = new List<float>();
             foreach (var light in Lights)
             {
                 if (light is DirectionLight)
                 {
-                    types.Add(0);
+                    types.Add(0.0f);
                 }
                 else if (light is PointLight)
                 {
-                    types.Add(1);
+                    types.Add(1.0f);
                 }
                 else if (light is SpotLight)
                 {
-                    types.Add(2);
+                    types.Add(2.0f);
                 }
                 else
                 {
-                    types.Add(-1);
+                    types.Add(-1.0f);
                 }
             }
 

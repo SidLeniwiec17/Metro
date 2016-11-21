@@ -26,19 +26,24 @@ namespace Metro2.Scena
             Rotation = Matrix.Identity;
 
         }
-        public void Draw(Effect shader)
+        public void Draw(Effect shader, GraphicsDeviceManager graphics)
         {
             foreach (var mesh in Model.Meshes)
             {
                 foreach (var part in mesh.MeshParts)
                 {
                     part.Effect = shader;
-                    shader.Parameters["World"].SetValue(mesh.ParentBone.Transform * Scale * Rotation * Translation);
-                    shader.Parameters["DiffuseColor"].SetValue(DiffuseColor);
-                    shader.Parameters["AmbientColor"].SetValue(AmbientColor);
-                    shader.Parameters["SpecularColor"].SetValue(SpecularColor);
-                    shader.Parameters["Shininess"].SetValue(Shininess);
-
+                }
+            }
+            foreach (var mesh in Model.Meshes)
+            {
+                foreach (Effect effect in mesh.Effects)
+                {
+                    effect.Parameters["World"].SetValue(mesh.ParentBone.Transform * Scale * Rotation * Translation);
+                    effect.Parameters["DiffuseColor"].SetValue(DiffuseColor);
+                    effect.Parameters["AmbientColor"].SetValue(AmbientColor);
+                    effect.Parameters["SpecularColor"].SetValue(SpecularColor);
+                    effect.Parameters["Shininess"].SetValue(Shininess);
                 }
 
                 mesh.Draw();

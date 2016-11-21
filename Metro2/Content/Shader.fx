@@ -25,7 +25,7 @@ float LightFalloff[MAXLIGHTS];
 
 float LightConeAngle[MAXLIGHTS];
 
-int LightType[MAXLIGHTS];
+float LightType[MAXLIGHTS];
 
 //Material properties
 float3 DiffuseColor = float3(1, 1, 1);
@@ -66,7 +66,6 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-	
 	// Start with ambient lighting
 	float3 lighting = AmbientColor;
 
@@ -75,7 +74,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
 	for (int i = 0; i < LightsCount; i++)
 	{
-		if (LightType[i] == DIRECTION)
+		if (LightType[i] == (float)DIRECTION)
 		{
 			//Direction light diffuse
 			float3 lightDir = normalize(LightDirection[i]);
@@ -87,7 +86,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 			float specular = saturate(pow(dot(refl, view), Shininess));
 			lighting += LightColor[i] * SpecularColor * specular;
 		}
-		else if (LightType[i] == POINT)
+		else if (LightType[i] == (float)POINT)
 		{
 			float att = 1 - pow(clamp(distance(LightPosition[i], input.WorldPosition) / LightAttenuation[i], 0, 1), LightFalloff[i]);
 
@@ -101,7 +100,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 			float specular = saturate(pow(dot(refl, view), Shininess));
 			lighting += LightColor[i] * SpecularColor * specular * att;
 		}
-		else if (LightType[i] == SPOT)
+		else if (LightType[i] == (float)SPOT)
 		{
 			//Spot light diffuse
 			float3 lightDir = normalize(LightPosition[i] - input.WorldPosition);
